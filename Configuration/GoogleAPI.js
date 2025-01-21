@@ -9,7 +9,7 @@ const SCOPES = [
 
 const OAuth2Client = new google.auth.OAuth2(
    process.env.GOOGLE_SECRET_ID, // This should hold the Client ID
-  process.env.GOOGLE_SECRET_KEY, // This should hold the Client Secret
+  process.env.GOOGLE_CLIENT_KEY , // This should hold the Client Secret
   "http://localhost:1042/user/oauth2callback" // Redirect URI for local development
 );
 

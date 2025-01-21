@@ -1,4 +1,5 @@
 const express = require("express")
+require("dotenv").config();
 const { User, AI, Campaign, Notification, Setting, Followup } = require("../Schema/UserSchema")
 const jwt = require("jsonwebtoken")
 const Verify_user = require("../Middleware/Verify_User")
@@ -62,13 +63,14 @@ const generateUserToken = (tokens, email) => {
     email: email,
   };
 
-  return jwt.sign(jwtPayload, process.env.SECRET_KEY, { expiresIn: '7d' });
+
+  return jwt.sign(jwtPayload, "HELLOBHAI", { expiresIn: '7d' });
 };
 
 User_Router.get("/oauth2callback", async (req, res) => {
   console.log(req.query);
   const { code } = req.query;
-
+ 
   if (!code) {
     return res.status(400).json({ msg: "Missing authorization code." });
   }
