@@ -4,7 +4,7 @@ const Days_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "F
 const Dash_board_Data = async (req, res) => {
     try {
         const { email } = req.user;
-
+    
         // Find the user and populate campaigns
         const Found_user = await User.findOne({ email }).populate("campaign");
         if (!Found_user) {

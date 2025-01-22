@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 const Verify_user = (req, res, next) => {
     const user_token = req.signedCookies.user_token;
-    
+    console.log(req.signedCookies)
     try {
         if (!user_token) {
             return res.status(400).json({ mag: "Token Not found" })
