@@ -28,7 +28,7 @@ User_Router.get("/reauth", async (req, res) => {
   const authorizeURL = OAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
-    redirect_uri: 'http://localhost:1042/user/oauth2callback',
+    redirect_uri: 'https://cold-server-bj3d.vercel.app/user/oauth2callback',
     prompt:"consent"
   })
 
