@@ -18,7 +18,7 @@ User_Router.get("/auth", async (req, res) => {
   const authorizeURL = OAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
-    redirect_uri: 'http://localhost:1042/user/oauth2callback',
+    redirect_uri: 'https://cold-server-bj3d.vercel.app/user/oauth2callback',
     
   })
 
@@ -132,7 +132,7 @@ User_Router.get("/oauth2callback", async (req, res) => {
         signed: true,
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
       });
-return res.redirect(`http://localhost:5173?user=${JSON.stringify(Saved_user)}`)
+return res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`)
      
     }
   } catch (error) {
