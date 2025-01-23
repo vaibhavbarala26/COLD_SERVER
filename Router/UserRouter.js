@@ -14,26 +14,40 @@ const { google } = require("googleapis")
 const Dash_board_Data = require("../Controllers/Dashboard")
 const User_Router = express.Router()
 
+const getRedirectURI = () =>
+  process.env.Environment === "prod"
+    ? "https://cold-server-bj3d.vercel.app/user/oauth2callback"
+    : "http://localhost:1042/user/oauth2callback";
+
 User_Router.get("/auth", async (req, res) => {
-  const authorizeURL = OAuth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: SCOPES,
-    redirect_uri: 'https://cold-server-bj3d.vercel.app/user/oauth2callback',
-    
-  })
+  try {
+    const authorizeURL = OAuth2Client.generateAuthUrl({
+      access_type: "offline",
+      scope: SCOPES,
+      redirect_uri: getRedirectURI(),
+    });
+    res.redirect(authorizeURL);
+  } catch (error) {
+    console.error("Error in /auth:", error);
+    res.status(500).json({ msg: "Authorization failed." });
+  }
+});
 
-  res.redirect(authorizeURL)
-})
 User_Router.get("/reauth", async (req, res) => {
-  const authorizeURL = OAuth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: SCOPES,
-    redirect_uri: 'https://cold-server-bj3d.vercel.app/user/oauth2callback',
-    prompt:"consent"
-  })
+  try {
+    const authorizeURL = OAuth2Client.generateAuthUrl({
+      access_type: "offline",
+      scope: SCOPES,
+      redirect_uri: getRedirectURI(),
+      prompt: "consent",
+    });
+    res.redirect(authorizeURL);
+  } catch (error) {
+    console.error("Error in /reauth:", error);
+    res.status(500).json({ msg: "Re-authorization failed." });
+  }
+});
 
-  res.redirect(authorizeURL)
-})
 const createUserSettings = async (email) => {
   const newAI = new AI();
   const newCampaign = new Followup();
@@ -115,7 +129,7 @@ User_Router.get("/oauth2callback", async (req, res) => {
       
             
 console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
-return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`) : res.redirect(`http://localhost:1042?user=${JSON.stringify(Saved_user)}`)
+return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Found_User)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Found_User)}`)
  
     } else {
       // Create a new user if not found
@@ -140,7 +154,7 @@ return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.ve
       });
       
 console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
-return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`) : res.redirect(`http://localhost:1042?user=${JSON.stringify(Saved_user)}`)
+return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Saved_user)}`)
      
     }
   } catch (error) {
