@@ -20,6 +20,8 @@ const getRedirectURI = () =>
     : "http://localhost:1042/user/oauth2callback";
 
 User_Router.get("/auth", async (req, res) => {
+  console.log(process.env)
+  console.log(getRedirectURI())
   try {
     const authorizeURL = OAuth2Client.generateAuthUrl({
       access_type: "offline",
@@ -58,7 +60,7 @@ const createUserSettings = async (email) => {
   await newNotification.save();
 
   const newSetting = new Setting({
-    primaryEmail:email,
+    primaryEmail: email,
     aiPreference: newAI._id,
     notification: newNotification._id,
     followup: newCampaign._id,
@@ -84,7 +86,7 @@ const generateUserToken = (tokens, email) => {
 User_Router.get("/oauth2callback", async (req, res) => {
   console.log(req.query);
   const { code } = req.query;
- 
+
   if (!code) {
     return res.status(400).json({ msg: "Missing authorization code." });
   }
@@ -103,7 +105,7 @@ User_Router.get("/oauth2callback", async (req, res) => {
 
     let Found_User = await User.findOne({ email: userEmail });
     console.log(userEmail);
-    
+
     if (Found_User) {
       // Update existing user's settings if necessary
       if (!Found_User.refresh_token && tokens.refresh_token) {
@@ -126,11 +128,11 @@ User_Router.get("/oauth2callback", async (req, res) => {
         sameSite: "none", // Required for cross-site cookies
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
-      
-            
-console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
-return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Found_User)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Found_User)}`)
- 
+
+
+      console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
+      return process.env.Environment === "prod" ? res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Found_User)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Found_User)}`)
+
     } else {
       // Create a new user if not found
       const newSetting = await createUserSettings(userEmail);
@@ -152,10 +154,10 @@ return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.ve
         sameSite: "none", // Required for cross-site cookies
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
-      
-console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
-return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Saved_user)}`)
-     
+
+      console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
+      return process.env.Environment === "prod" ? res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Saved_user)}`)
+
     }
   } catch (error) {
     console.error("OAuth callback error:", error);
@@ -168,5 +170,5 @@ User_Router.post("/setting/mail", Verify_user, Settind_Add_AdditionalEmail)
 User_Router.post("/setting/ai", Verify_user, Settind_Add_AIPrefer)
 User_Router.post("/setting/followup", Verify_user, Settind_Add_Follow_up)
 User_Router.post("/setting/alerts", Verify_user, Settind_Add_Alerts)
-User_Router.get("/dashboard" ,Verify_user, Dash_board_Data)
+User_Router.get("/dashboard", Verify_user, Dash_board_Data)
 module.exports = User_Router
