@@ -140,7 +140,7 @@ console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
       });
       
 console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
-return res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`)
+return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`) : res.redirect(`http://localhost:1042?user=${JSON.stringify(Saved_user)}`)
      
     }
   } catch (error) {
