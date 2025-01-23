@@ -115,8 +115,8 @@ User_Router.get("/oauth2callback", async (req, res) => {
       
             
 console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
-       return res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Found_User)}`)
-     
+return  process.env.Environment === "prod" ?  res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`) : res.redirect(`http://localhost:1042?user=${JSON.stringify(Saved_user)}`)
+ 
     } else {
       // Create a new user if not found
       const newSetting = await createUserSettings(userEmail);
