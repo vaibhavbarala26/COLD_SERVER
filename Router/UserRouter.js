@@ -64,7 +64,7 @@ const generateUserToken = (tokens, email) => {
   };
 
 
-  return jwt.sign(jwtPayload, "HELLOBHAI", { expiresIn: '7d' });
+  return jwt.sign(jwtPayload, process.env.SECRET_KEY, { expiresIn: '7d' });
 };
 
 User_Router.get("/oauth2callback", async (req, res) => {
@@ -108,10 +108,13 @@ User_Router.get("/oauth2callback", async (req, res) => {
       res.cookie("user_token", userToken, {
         httpOnly: true,
         signed: true,
-        secure:true,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+        secure: true,
+        sameSite: "none", // Required for cross-site cookies
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
-
+      
+            
+console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
        return res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Found_User)}`)
      
     } else {
@@ -131,9 +134,12 @@ User_Router.get("/oauth2callback", async (req, res) => {
       res.cookie("user_token", userToken, {
         httpOnly: true,
         signed: true,
-        secure:true,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+        secure: true,
+        sameSite: "none", // Required for cross-site cookies
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
+      
+console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
 return res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`)
      
     }

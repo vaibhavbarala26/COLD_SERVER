@@ -6,7 +6,7 @@ const Verify_user = require("./Middleware/Verify_User")
 const Email_Router = require("./Router/EmailRouter")
 const cors = require("cors");
 const app = express()
-app.use(cookiParser("HELLOBHAI"))
+app.use(cookiParser(process.env.SECRET_KEY))
 app.use(cors({
     origin:["http://localhost:5173",  "https://cold-weld.vercel.app"],
     credentials:true,
