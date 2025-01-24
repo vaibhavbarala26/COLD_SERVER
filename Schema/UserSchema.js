@@ -24,6 +24,7 @@ const Notification = mongoose.model("Notification", NotificationSchema);
 
 // Email Schema
 const emailSchema = new mongoose.Schema({
+
     body: { type: String, required: true },
     subject: { type: String, required: true },
     sender: { type: String, required: true },

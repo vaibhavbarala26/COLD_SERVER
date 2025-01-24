@@ -11,7 +11,8 @@ const Settind_Add_Follow_up = require("../Controllers/SettindAdd(followups)")
 const Settind_Add_Alerts = require("../Controllers/SettindAdd(Alerts)")
 const { OAuth2Client, SCOPES } = require("../Configuration/GoogleAPI")
 const { google } = require("googleapis")
-const Dash_board_Data = require("../Controllers/Dashboard")
+const Dash_board_Data = require("../Controllers/Dashboard");
+const Get_Email_additional = require("../Controllers/GetAdditonalemail");
 const User_Router = express.Router()
 
 const getRedirectURI = () =>
@@ -120,11 +121,12 @@ User_Router.get("/oauth2callback", async (req, res) => {
 
       // Generate JWT token
       const userToken = generateUserToken(tokens, userEmail);
+console.log(process.env.Environment);
 
       res.cookie("user_token", userToken, {
         httpOnly: true,
         signed: true,
-        secure: true,
+        secure: process.env.Environment === "prod",
         sameSite: "none", // Required for cross-site cookies
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
@@ -146,11 +148,12 @@ User_Router.get("/oauth2callback", async (req, res) => {
 
       // Generate JWT token
       const userToken = generateUserToken(tokens, userEmail);
+      console.log(process.env.Environment);
 
       res.cookie("user_token", userToken, {
         httpOnly: true,
         signed: true,
-        secure: true,
+        secure:process.env.Environment === "prod",
         sameSite: "none", // Required for cross-site cookies
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       });
@@ -171,4 +174,5 @@ User_Router.post("/setting/ai", Verify_user, Settind_Add_AIPrefer)
 User_Router.post("/setting/followup", Verify_user, Settind_Add_Follow_up)
 User_Router.post("/setting/alerts", Verify_user, Settind_Add_Alerts)
 User_Router.get("/dashboard", Verify_user, Dash_board_Data)
+User_Router.get("/additional" , Verify_user , Get_Email_additional)
 module.exports = User_Router
