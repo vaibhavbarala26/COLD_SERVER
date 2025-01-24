@@ -8,7 +8,7 @@ const cors = require("cors");
 const app = express()
 app.use(cookiParser(process.env.SECRET_KEY))
 app.use(cors({
-    origin:["http://localhost:5173",  "https://cold-weld.vercel.app"],
+    origin:["http://localhost:5173",  "https://cold-nine.vercel.app"],
     credentials:true,
 }))
 const PORT = 1042
