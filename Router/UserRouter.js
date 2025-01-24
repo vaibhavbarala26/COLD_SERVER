@@ -133,7 +133,7 @@ console.log(process.env.Environment);
 
 
       console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
-      return process.env.Environment === "prod" ? res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Found_User)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Found_User)}`)
+      return process.env.Environment === "prod" ? res.redirect(`https://cold-nine.vercel.app/?user=${JSON.stringify(Found_User)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Found_User)}`)
 
     } else {
       // Create a new user if not found
@@ -159,7 +159,7 @@ console.log(process.env.Environment);
       });
 
       console.log("Set-Cookie:", res.getHeaders()["set-cookie"]);
-      return process.env.Environment === "prod" ? res.redirect(`https://cold-weld.vercel.app?user=${JSON.stringify(Saved_user)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Saved_user)}`)
+      return process.env.Environment === "prod" ? res.redirect(`https://cold-nine.vercel.app/?user=${JSON.stringify(Saved_user)}`) : res.redirect(`http://localhost:5173?user=${JSON.stringify(Saved_user)}`)
 
     }
   } catch (error) {
